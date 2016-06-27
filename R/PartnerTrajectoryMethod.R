@@ -2,6 +2,7 @@ setGeneric(
   name = "PartnerTrajectory",
   def = function(A1, A2, dist, tempo)
   {
+    loadPackages()
     standardGeneric("PartnerTrajectory")
   }
 )
@@ -12,6 +13,15 @@ setMethod(
   definition = function(A1, A2, dist, tempo)
   {
     loadPackages()
+    ##length é dividido por 2, a lista tem 2 campos portanto tem o length dobrado
+    tdiff1 <- as.double(difftime(A1@endTime[[1]],A2@endTime[[1]], units = "hours"))
+    tdiff2 <- as.double(difftime(A1@endTime[[length(A1@endTime)]],A2@endTime[[length(A2@endTime)]], units = "hours"))
+    if(tdiff1<0){
+      tdiff1 <- tdiff1*-1
+    }
+    if(tdiff2<0){
+      tdiff2 <- tdiff2*-1
+    }
     length1 <- length(A1@sp@coords) / 2;
     length2 <- length(A2@sp@coords) / 2;
     ini <-
@@ -27,10 +37,13 @@ setMethod(
         joinStyle = "ROUND"
       )
     if (gIntersects(ini, A2@sp[1,]) &&
-        gIntersects(fim,A1@sp[length2,])) {
+        gIntersects(fim,A2@sp[length2,])&& tdiff1<tempo && tdiff2<tempo) {
       count = 0
       time  = 0
-      timeSeries <- compare(A1,A2)
+       print(A1@data$traj[[1]])
+       print(A2@data$traj[[1]])
+      timeSeries <- compare(A2,A1)
+
       #Contador para as conexoes
       i = 1;
       j = 1;
@@ -64,7 +77,7 @@ setMethod(
         }
 
       }
-
+      print("passei do compare")
       return (TRUE)
     }
 

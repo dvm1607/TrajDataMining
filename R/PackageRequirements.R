@@ -17,4 +17,8 @@ loadPackages <- function() {
   if (!require(TrajDataAccess, quietly = TRUE)) {
     stop('The package TrajDataAccess was not installed')
   }
+
+  if (!require(geosphere, quietly = TRUE)) {
+    stop('The package geosphere was not installed')
+  }
 }
