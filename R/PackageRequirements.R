@@ -21,4 +21,12 @@ loadPackages <- function() {
   if (!require(geosphere, quietly = TRUE)) {
     stop('The package geosphere was not installed')
   }
+
+  if (!require(doMC, quietly = TRUE)) {
+    stop('The package doMC was not installed')
+  }
+
+  if (!require(parallel, quietly = TRUE)) {
+    stop('The package parallel was not installed')
+  }
 }

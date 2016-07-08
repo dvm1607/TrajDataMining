@@ -12,15 +12,17 @@ setMethod(
   signature = c("DataSourceInfo","DataSetInfo","Track", "numeric", "numeric"),
   definition = function(datasource,dataset,A1, dist, tempo)
   {
-
+    cores = detectCores(all.tests = FALSE, logical = TRUE)
+    registerDoMC(cores)
     TrajectoryList <- getTrajectoryByTrack(datasource,dataset,A1)
     PartnerList <- list()
     i = 1
-    if(length(TrajectoryList)>0){
-    for (n in 1:length(TrajectoryList)) {
-      for (m in 1:length(TrajectoryList[[n]]@tracks)) {
-      if (PartnerTrajectory(A1,TrajectoryList[[n]]@tracks[[m]],dist,tempo)) {
-        PartnerList[i] <- TrajectoryList[[n]]@tracks[[m]]
+    if(class(TrajectoryList)=="TracksCollection")
+    if(length(TrajectoryList@tracksCollection)>0){
+    for (n in 1:length(TrajectoryList@tracksCollection)) {
+      foreach(m = 1:length(TrajectoryList@tracksCollection[[n]]@tracks))%dopar% {
+      if (PartnerTrajectory(A1,TrajectoryList@tracksCollection[[n]]@tracks[[m]],dist,tempo)) {
+        PartnerList[i] <- TrajectoryList@tracksCollection[[n]]@tracks[[m]]
         i = i + 1
       }
 }
