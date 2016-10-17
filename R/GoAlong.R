@@ -43,6 +43,7 @@ setMethod(
     }
     count = 0
       time  = 0
+
       ## print(A1@data$traj[[1]])
       ## print(A2@data$traj[[1]])
 
@@ -57,24 +58,26 @@ setMethod(
       i = 1;
       j = 1;
 
-
+        if(length(timeSeries@conns1@data$dists)>2){
           for (n in 2:(length(timeSeries@conns1@data$dists)-1)) {
               if (timeSeries@conns1@data$dists[n] <= dist && inCounter==FALSE) {
                 initialTime = timeSeries@conns1@data$time[n]
                 inCounter=TRUE
                 print("Saved the initial time :")
                 print(initialTime)
+                print(id1)
+                print(id2)
 
               }
               if (timeSeries@conns1@data$dists[n] > dist) {
                 time = time + difftime(timeSeries@conns1@data$time[n+1],timeSeries@conns1@data$time[n],units="secs")
                 if (time > tempo && inCounter==TRUE){
                   finalTime = timeSeries@conns1@data$time[n]
-                  #iniFinList <- c(Begin=initialTime,End=finalTime,Id1=id1,Id2=id2)
+                 # iniFinList <- c(Begin=initialTime,End=finalTime,Id1=id1,Id2=id2)
                  iniFinList <- c(Begin=as.character(initialTime),End=as.character(finalTime),Id1=id1,Id2=id2)
 
                   allGoAlong[nrow(allGoAlong)+1,]<-c(iniFinList)
-                  allGoAlongList <- append(allGoAlongList,iniFinList)
+                 # allGoAlongList <- append(allGoAlongList,iniFinList)
                   iniFinList <- NULL
                   inCounter = FALSE
                   time=0
@@ -91,12 +94,12 @@ setMethod(
               #iniFinList <- c(Begin=initialTime,End=finalTime,Id1=id1,Id2=id2)
                iniFinList <- c(Begin=as.character(initialTime),End=as.character(finalTime),Id1=id1,Id2=id2)
               allGoAlong[nrow(allGoAlong)+1,]<-c(iniFinList)
-              allGoAlongList <- append(allGoAlongList,iniFinList)
+#              allGoAlongList <- append(allGoAlongList,iniFinList)
               iniFinList <- NULL
               inCounter = FALSE
             }
           }
-
+}
 
       return (allGoAlong)
       }
