@@ -56,7 +56,7 @@ setMethod(
 
     timelist<- unlist(timelist)
     timelist<-as.POSIXct(timelist ,format="%Y-%m-%d %H:%M:%S")
-    sti<- STI(SpatialPoints(xy, A1@sp@proj4string),timelist,timelist)
+    sti<- STIDF(SpatialPoints(xy, A1@sp@proj4string),timelist,dat,timelist)
 
     AR = Track(sti)
 

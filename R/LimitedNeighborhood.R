@@ -18,7 +18,9 @@ setMethod(
     avgspeed = 0
     time = 0
     for(i in 1:length(sln)){
+      ##receives the indexes calculated in the slowestneighborhood
       indexsln <- sln[[i]]
+      ##avgspeed <- receives the values to calculate the weightned average.
       avgspeed = avgspeed + track@connections$speed[indexsln]*track@connections$duration[indexsln]
      time = time + track@connections$duration[indexsln]
      }

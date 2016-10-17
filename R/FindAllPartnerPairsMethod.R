@@ -9,7 +9,7 @@ setGeneric(
 
 setMethod(
   f = "FindAllPartnerPairs",
-  signature = c("DataSourceInfo","DataSetInfo","TracksCollection", "numeric", "numeric"),
+  signature = c("DataSourceInfo","TrajectoryDataSetInfo","TracksCollection", "numeric", "numeric"),
   definition = function(datasource,dataset,A1, dist, tempo)
   {
     PartnerList <- list()

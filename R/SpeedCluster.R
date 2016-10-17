@@ -6,7 +6,8 @@ setGeneric(
     standardGeneric("SpeedCluster")
   }
 )
-
+##Creeates the speeed clusters Track is a given track, avg is the average speed,
+##minT is the minimum period at the speed. And sl is the speed limit
 setMethod(
   f = "SpeedCluster",
   signature = c("Track","numeric", "numeric", "numeric"),
@@ -17,6 +18,7 @@ setMethod(
       return (0)}
     cl<-list()
     clusterId = 1;
+    ##Order the speed so it will start with the slowest speed cluster
     speedOrder <- order(track@connections$speed)
     for(n in 1:length(speedOrder)){
     x<-LimitedNeighborhood(track,speedOrder[n],minT,clusterId , cl, avg , sl)

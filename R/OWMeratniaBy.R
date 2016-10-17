@@ -40,8 +40,8 @@ size <- (length(A1@sp)-1)
             sp1<- A1@connections$speed[i-1]
             sp2<- A1@connections$speed[i]
             dsp <- sp1-sp2
-            print(paste("eu sou o size", e))
-print(i)
+            ##print(paste("eu sou o size", e))
+##print(i)
             if((dsp < 0) ==TRUE){
               dsp <-dsp*-1
             }

@@ -31,8 +31,16 @@ setMethod(
     xy <- coordinates(dat)
 
     timelist<- unlist(timelist)
+    for(n in 1:length(timelist)){
+      print(timelist[n])
+      if(is.na(timelist[n])){
+        timelist[n]=(timelist[n-1]+timelist[n+1])/2 ##tentando substituir valor se houver apenas um faltante
+      }
+    }
     timelist<-as.POSIXct(timelist ,format="%Y-%m-%d %H:%M:%S")
+    ##dat here is a place holderst
     sti<- STI(SpatialPoints(xy, A1@sp@proj4string),timelist,timelist)
+    ##sti<- STIDF(SpatialPoints(xy, A1@sp@proj4string),timelist,dat,timelist)
 
     AR = Track(sti)
 

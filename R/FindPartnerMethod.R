@@ -9,7 +9,7 @@ setGeneric(
 
 setMethod(
   f = "FindPartner",
-  signature = c("DataSourceInfo","DataSetInfo","Track", "numeric", "numeric"),
+  signature = c("DataSourceInfo","TrajectoryDataSetInfo","Track", "numeric", "numeric"),
   definition = function(datasource,dataset,A1, dist, tempo)
   {
     cores = detectCores(all.tests = FALSE, logical = TRUE)
