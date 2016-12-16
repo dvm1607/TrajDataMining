@@ -20,7 +20,7 @@ setMethod(
     if(class(TrajectoryList)=="TracksCollection")
     if(length(TrajectoryList@tracksCollection)>0){
     for (n in 1:length(TrajectoryList@tracksCollection)) {
-      foreach(m = 1:length(TrajectoryList@tracksCollection[[n]]@tracks))%dopar% {
+      for(m in 1:length(TrajectoryList@tracksCollection[[n]]@tracks)){
       if (PartnerTrajectory(A1,TrajectoryList@tracksCollection[[n]]@tracks[[m]],dist,tempo)) {
         PartnerList[i] <- TrajectoryList@tracksCollection[[n]]@tracks[[m]]
         i = i + 1

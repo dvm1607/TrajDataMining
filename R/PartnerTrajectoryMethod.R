@@ -50,34 +50,15 @@ setMethod(
       #Contador para as conexoes
       i = 1;
       j = 1;
-      for (n in 2:(length(timeSeries@track1)-1)) {
-        if (timeSeries@conns1@data$time[i] < timeSeries@conns2@data$time[j]) {
-          if (timeSeries@conns1@data$dists[i] > dist) {
+      for (n in 1:(length(timeSeries@conns1))) {
+
+          if (timeSeries@conns1@data$dists[n] > dist) {
             time = time + timeSeries@track1@connections$duration[n]
             if (time > tempo)
               return (FALSE)
           }
           i = i + 1
-        }
-        else if (timeSeries@conns1@data$time[i] > timeSeries@conns2@data$time[j]) {
-          if (timeSeries@conns2@data$dists[j] > dist) {
-            time = time + timeSeries@track1@connections$duration[n]
-            if (time > tempo)
-              return (FALSE)
-          }
-          j = j + 1
-        }
-        else if (!(timeSeries@conns1@data$time[i] < timeSeries@conns2@data$time[j]) &&
-                 !(timeSeries@conns1@data$time[i] > timeSeries@conns2@data$time[j]))
-        {
-          if (timeSeries@conns2@data$dists[j] > dist) {
-            time = time + timeSeries@track1@connections$duration[n]
-            if (time > tempo)
-              return (FALSE)
-          }
-          j = j + 1
-          i = i + 1
-        }
+
 
       }
 
