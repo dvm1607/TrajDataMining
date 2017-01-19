@@ -33,15 +33,18 @@ setMethod(
   ##  referencestbox <- STBox(xMin = stboxexample[[1]][1],xMax = stboxexample[[1]][2],yMin = stboxexample[[2]][1],yMax = stboxexample[[2]][2],tMin = as.character(stboxexample[[3]][1]),tMax = as.character(stboxexample[[3]][2]))
    ## idealList <- getIdealGroupsInSTBox(con,dataset,referencestbox)
   ##   for(el in 1:length(idealList)){
-    TrajectoryList <- getTrajectoryByTrack(datasource,dataset,A1)
+    TrajectoryList <- getTrajectoryByTrack(datasource,dataset,A1,dist/5)
      ##  TrajectoryList <- getTrajectoryByIDList(datasource,dataset,idealList[[el]])
 
     if(class(TrajectoryList)=="TracksCollection"){
       if(length(TrajectoryList@tracksCollection)>0){
         for (n in 1:length(TrajectoryList@tracksCollection)) {
+         ## foreach (m =1:length(TrajectoryList@tracksCollection[[n]]@tracks))%dopar% {
           for (m in 1:length(TrajectoryList@tracksCollection[[n]]@tracks)) {
+            if(length(TrajectoryList@tracksCollection[[n]]@tracks[[m]])>15){
            ga<- GoAlong(A1,TrajectoryList@tracksCollection[[n]]@tracks[[m]],dist,tempo,mintime,con)
-          # if(class(ga)=="data.frame"){
+          }
+            # if(class(ga)=="data.frame"){
            #if (nrow(ga)>0){
            #for(j in 1:nrow(ga)){
             #    if(ga[[j,3]]!=ga[[j,4]]){
@@ -55,8 +58,10 @@ setMethod(
       if(length(TrajectoryList@tracks)>0){
 
           for (m in 1:length(TrajectoryList@tracks)) {
+            if(length(TrajectoryList@tracks[[m]])>15){
             ga<- GoAlong(A1,TrajectoryList@tracks[[m]],dist,tempo,mintime,con)
-           # if(class(ga)=="data.frame"){
+          }
+            # if(class(ga)=="data.frame"){
             #if (nrow(ga)>1){
              # for(j in 1:nrow(ga)){
               #  allGoAlong[nrow(allGoAlong)+1,]<-ga[j,]

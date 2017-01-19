@@ -12,6 +12,9 @@ setMethod(
   signature = c("DataSourceInfo","TrajectoryDataSetInfo", "numeric", "numeric","numeric","list"),
   definition = function(datasource,trajectorydataset, dist, tempo, mintime ,stboxes)
   {
+    cores = detectCores(all.tests = FALSE, logical = TRUE)
+    cores = 1;
+    registerDoMC(cores)
     PartnerList <- list()
     allGoAlong <- data.frame(Begin=as.POSIXct(character()),
                              End=as.POSIXct(character()),
@@ -41,7 +44,9 @@ setMethod(
         }
 
     if(class(A1)=="TracksCollection"){
-      for (n in 1:length(A1@tracksCollection)){
+      foreach (n = 1:length(A1@tracksCollection))%dopar%{
+      ##for (n in 1:length(A1@tracksCollection)){
+        ##foreach (m = 1:length(A1@tracksCollection[[n]]@tracks))%dopar%{
         for (m in 1:length(A1@tracksCollection[[n]]@tracks)){
 
           FoundPartners <- FindGoAlong(datasource,trajectorydataset,A1@tracksCollection[[n]]@tracks[[m]], dist, tempo,mintime)
@@ -57,6 +62,7 @@ setMethod(
 
     else if(class(A1)=="Tracks"){
 
+      ##foreach (m = 1:length(A1@tracks))%dopar%{
       for (m in 1:length(A1@tracks)){
 
         FoundPartners <- FindGoAlong(datasource,trajectorydataset,A1@tracks[[m]], dist, tempo,mintime)
