@@ -1,14 +1,14 @@
 setGeneric(
-  name = "OWMeratniaByCollection",
+  name = "owMeratniaByCollection",
   def = function(A1, dist, speed)
   {
-    loadPackages()
-    standardGeneric("OWMeratniaByCollection")
+    .loadPackages()
+    standardGeneric("owMeratniaByCollection")
   }
 )
 
 setMethod(
-  f = "OWMeratniaByCollection",
+  f = "owMeratniaByCollection",
   signature = c("TracksCollection", "numeric", "numeric"),
   definition = function(A1, dist, speed)
   {
@@ -22,9 +22,9 @@ setMethod(
         print("Track")
         print(m)
         ##if(n != 12 && m!= 97)##{
-        compressed[m] <- OWMeratniaBy(A1@tracksCollection[[n]]@tracks[[m]], dist, speed)##}
+        compressed[m] <- owMeratniaBy(A1@tracksCollection[[n]]@tracks[[m]], dist, speed)##}
       ##  if(n == 12 && m== 97){
-        ##  compressed[m] <- OWMeratniaBy(A1@tracksCollection[[n]]@tracks[[m-1]], dist, speed)##}
+        ##  compressed[m] <- owMeratniaBy(A1@tracksCollection[[n]]@tracks[[m-1]], dist, speed)##}
       }
       PartnerList <- c(PartnerList,Tracks(compressed))
       compressed <- NULL

@@ -4,15 +4,15 @@ setClass("singledifftrack",
 )
 ## compare tracks
 setGeneric(
-  name = "mycompare",
-  def = function(tr1, tr2) standardGeneric("mycompare")
+  name = ".mycompare",
+  def = function(tr1, tr2) standardGeneric(".mycompare")
 )
 
 ## get distances between 2 Track objects for each point in time where they overlap
 ## extend each track with these points
 ## create corresponding lines
 ## returns a difftrack object
-mycompare.track <- function(tr1, tr2) {
+.mycompare.track <- function(tr1, tr2) {
   if (!requireNamespace("xts", quietly = TRUE))
     stop("package xts required for track comparison")
   if (!(xts::first(tr1@endTime) < xts::last(tr2@endTime) && xts::first(tr2@endTime) < xts::last(tr1@endTime)))
@@ -31,8 +31,8 @@ mycompare.track <- function(tr1, tr2) {
   # find points and create new extended data frames
   print("terceiro debug")
 
-  newTrack1.df <- findPoints(track2.df, track1.df, ivs2)
-  newTrack2.df <- findPoints(track1.df, track2.df, ivs1)
+  newTrack1.df <- .findPoints(track2.df, track1.df, ivs2)
+  newTrack2.df <- .findPoints(track1.df, track2.df, ivs1)
   # points on the original
   print("quarto debug")
 
@@ -40,10 +40,10 @@ mycompare.track <- function(tr1, tr2) {
   conns21 <- merge(track2.df, newTrack1.df, "time")
 
   if(length(conns12$time)>0){
-  conns12 <- lineConnections(conns12, crs)
+  conns12 <- .lineConnections(conns12, crs)
   }
   if(length(conns21$time)>0){
-  conns21 <- lineConnections(conns21, crs)
+  conns21 <- .lineConnections(conns21, crs)
   }
   # extended tracks
   newTrack1 <- STIDF(SpatialPoints(cbind(newTrack1.df$x, newTrack1.df$y), crs), newTrack1.df$time, data.frame(1:nrow(newTrack1.df)))
@@ -64,10 +64,10 @@ mycompare.track <- function(tr1, tr2) {
 
 }
 
-setMethod("mycompare", signature("Track"), mycompare.track)
+setMethod(".mycompare", signature("Track"), .mycompare.track)
 
 ## finds corresponding points for track1 on track2
-findPoints <- function(tr1, tr2, ivs) {
+.findPoints <- function(tr1, tr2, ivs) {
   x <- tr2[,1]
   y <- tr2[,2]
   time <- tr2[,3]
@@ -93,7 +93,7 @@ findPoints <- function(tr1, tr2, ivs) {
 }
 
 ## creates SpatialLines
-lineConnections <- function(conns, crs) {
+.lineConnections <- function(conns, crs) {
   Lines <- list()
   coords1 <- cbind(conns[,2], conns[,3])
   coords2 <- cbind(conns[,4], conns[,5])

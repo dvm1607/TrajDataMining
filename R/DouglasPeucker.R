@@ -1,23 +1,23 @@
 setGeneric(
-  name = "DouglasPeucker",
+  name = "douglasPeucker",
   def = function(A1, dist)
   {
-    loadPackages()
-    standardGeneric("DouglasPeucker")
+    .loadPackages()
+    standardGeneric("douglasPeucker")
   }
 )
 
 setGeneric(
-  name = "DouglasPeuckerRP",
+  name = ".douglasPeuckerRP",
   def = function(A1,firstp,lastp, dist)
   {
-    loadPackages()
-    standardGeneric("DouglasPeuckerRP")
+    .loadPackages()
+    standardGeneric(".douglasPeuckerRP")
   }
 )
 
 setMethod(
-  f = "DouglasPeucker",
+  f = "douglasPeucker",
   signature = c("Track", "numeric"),
   definition = function(A1, dist)
   {
@@ -39,14 +39,19 @@ setMethod(
 
     pointIndexsToKeep[1] = firstPoint
     pointIndexsToKeep[2] = lastPoint
-    pointIndexsToKeep <- c(pointIndexsToKeep,DouglasPeuckerRP(A1,firstPoint,lastPoint,dist))
+    pointIndexsToKeep <- c(pointIndexsToKeep,.douglasPeuckerRP(A1,firstPoint,lastPoint,dist))
     pointIndexsToKeep<- unlist(pointIndexsToKeep, recursive=FALSE)
     pointIndexsToKeep <- sort(pointIndexsToKeep,method="quick")
+
+    saveddf<-as.data.frame(matrix(0,ncol = length(A1@data),nrow=length(pointIndexsToKeep)))
+    colnames(saveddf)<-colnames(A1@data)
+
     for (n in 1:length(pointIndexsToKeep)){
       i <- pointIndexsToKeep[n]
       timelist<-c(timelist,as.character(as.POSIXct(A1@endTime[i])))
       ylist<-c(ylist,A1@sp[i,]@coords[2])
       xlist<-c(xlist,A1@sp[i,]@coords[1])
+      saveddf[n,]<-A1@data[i,]
     }
 
     xlist=unlist(xlist,recursive = FALSE)
@@ -56,7 +61,7 @@ setMethod(
 
     timelist<- unlist(timelist)
     timelist<-as.POSIXct(timelist ,format="%Y-%m-%d %H:%M:%S")
-    sti<- STIDF(SpatialPoints(xy, A1@sp@proj4string),timelist,dat,timelist)
+    sti<- STIDF(SpatialPoints(xy, A1@sp@proj4string),timelist,saveddf,timelist)
 
     AR = Track(sti)
 
@@ -66,7 +71,7 @@ setMethod(
 )
 
 setMethod(
-  f = "DouglasPeuckerRP",
+  f = ".douglasPeuckerRP",
   signature = c("Track","numeric","numeric","numeric"),
   definition = function(A1,firstp,lastp, dist)
   {
@@ -87,8 +92,8 @@ setMethod(
     {
       ##Add the largest point that exceeds the tolerance
       pointIndexsToKeep <- c(pointIndexsToKeep,indexFarthest)
-      pointIndexsToKeep <- c(pointIndexsToKeep,DouglasPeuckerRP(A1,firstp,indexFarthest,dist))
-      pointIndexsToKeep <- c(pointIndexsToKeep,DouglasPeuckerRP(A1,indexFarthest,lastp,dist))
+      pointIndexsToKeep <- c(pointIndexsToKeep,.douglasPeuckerRP(A1,firstp,indexFarthest,dist))
+      pointIndexsToKeep <- c(pointIndexsToKeep,.douglasPeuckerRP(A1,indexFarthest,lastp,dist))
     }
     return (pointIndexsToKeep)
   }

@@ -1,14 +1,14 @@
 setGeneric(
-  name = "DirectionCluster",
+  name = "directionCluster",
   def = function(track, minD, minT , tolerance)
   {
-    loadPackages()
-    standardGeneric("DirectionCluster")
+    .loadPackages()
+    standardGeneric("directionCluster")
   }
 )
 
 setMethod(
-  f = "DirectionCluster",
+  f = "directionCluster",
   signature = c("Track","numeric", "numeric", "numeric"),
   definition = function(track, minD, minT , tolerance)
   {
@@ -82,7 +82,7 @@ setMethod(
           }
           else{
             for (j in clusterini:n){
-              print("j e clusterId")
+             # print("j e clusterId")
               print(j)
               print(clusterId)
               cl[j]<--1

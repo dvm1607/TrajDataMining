@@ -1,14 +1,14 @@
 setGeneric(
-  name = "OWMeratniaBy",
+  name = "owMeratniaBy",
   def = function(A1, dist, speed)
   {
-    loadPackages()
-    standardGeneric("OWMeratniaBy")
+    .loadPackages()
+    standardGeneric("owMeratniaBy")
   }
 )
 
 setMethod(
-  f = "OWMeratniaBy",
+  f = "owMeratniaBy",
   signature = c("Track", "numeric", "numeric"),
   definition = function(A1, dist, speed)
   {
@@ -62,7 +62,7 @@ size <- (length(A1@sp)-1)
              }
     }
 
-return(IndexToTrack(A1,pointIndexsToKeep))
+return(.IndexToTrack(A1,pointIndexsToKeep))
 
   }
 )

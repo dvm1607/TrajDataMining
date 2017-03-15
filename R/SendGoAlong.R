@@ -1,14 +1,14 @@
 setGeneric(
-  name = "sendGoAlongPairsToDB",
+  name = "sendPartnerPairsToDB",
   def = function(dataframe,dataSourceInfo,tablename)
   {
-    loadPackages()
-    standardGeneric("sendGoAlongPairsToDB")
+    .loadPackages()
+    standardGeneric("sendPartnerPairsToDB")
   }
 )
 
 setMethod(
-  f = "sendGoAlongPairsToDB",
+  f = "sendPartnerPairsToDB",
   signature = c("list","DataSourceInfo","character"),
   definition = function(dataframe,dataSourceInfo,tablename)
   {
@@ -46,7 +46,7 @@ value = partnerframe, append = TRUE, row.names = FALSE)
 
 
 setMethod(
-  f = "sendGoAlongPairsToDB",
+  f = "sendPartnerPairsToDB",
   signature = c("list","PostgreSQLConnection","character"),
   definition = function(dataframe,dataSourceInfo,tablename)
   {

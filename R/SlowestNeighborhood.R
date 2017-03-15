@@ -1,14 +1,14 @@
 setGeneric(
-  name = "SlowestNeighborhood",
+  name = ".SlowestNeighborhood",
   def = function(track, ini,minT, cl)
   {
-    loadPackages()
-    standardGeneric("SlowestNeighborhood")
+    .loadPackages()
+    standardGeneric(".SlowestNeighborhood")
   }
 )
 
 setMethod(
-  f = "SlowestNeighborhood",
+  f = ".SlowestNeighborhood",
   signature = c("Track","numeric", "numeric", "list"),
   definition = function(track, ini, minT, cl)
   {

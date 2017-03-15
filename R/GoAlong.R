@@ -1,16 +1,16 @@
 setGeneric(
-  name = "GoAlong",
-  def = function(A1, A2, dist, maxtime,mintime,datasource)
+  name = "partner",
+  def = function(A1, A2, dist, maxtime,mintime,datasource,tablename)
   {
-    loadPackages()
-    standardGeneric("GoAlong")
+    .loadPackages()
+    standardGeneric("partner")
   }
 )
 
 setMethod(
-  f = "GoAlong",
-  signature = c("Track","Track","numeric","numeric","numeric","DataSourceInfo"),
-  definition = function(A1, A2, dist, maxtime,mintime,datasource)
+  f = "partner",
+  signature = c("Track","Track","numeric","numeric","numeric","DataSourceInfo","character"),
+  definition = function(A1, A2, dist, maxtime,mintime,datasource,tablename)
   {
     tempo=maxtime
     loadPackages()
@@ -20,8 +20,8 @@ setMethod(
    minSize = FALSE
    firstContant = 1
     iniFinList <- list()
-    allGoAlongList <-list()
-    allGoAlong <- data.frame(Begin=as.POSIXct(character()),
+    allPartnerList <-list()
+    allPartner <- data.frame(Begin=as.POSIXct(character()),
                      End=as.POSIXct(character()),
                      Id1=character(),
                      Id2=character(),
@@ -57,7 +57,7 @@ if (id1==id2){
       if (!identicalCRS(A1, A2))
         return("CRS are not identical!")
 
-      timeSeries <- mycompare(A2,A1)
+      timeSeries <- .mycompare(A2,A1)
       if(class(timeSeries)!="singledifftrack"&&class(timeSeries)!="difftrack"){
         return("Tracks don't match!")
       }
@@ -92,9 +92,9 @@ if (id1==id2){
                  iniFinList <- c(Begin=as.character(initialTime),End=as.character(finalTime),Id1=id1,Id2=id2)
                  timefromstart <- difftime(timeSeries@conns1@data$time[n],timeSeries@conns1@data$time[firstContant],units="secs")
                   if(timefromstart > mintime){
-                  allGoAlong[nrow(allGoAlong)+1,]<-c(iniFinList)
+                  allPartner[nrow(allPartner)+1,]<-c(iniFinList)
                   }
-                 # allGoAlongList <- append(allGoAlongList,iniFinList)
+                 # allPartnerList <- append(allPartnerList,iniFinList)
                   iniFinList <- NULL
                   inCounter = FALSE
                   time=0
@@ -120,16 +120,16 @@ if (id1==id2){
                iniFinList <- c(Begin=as.character(initialTime),End=as.character(finalTime),Id1=id1,Id2=id2)
                timefromstart <- difftime(timeSeries@conns1@data$time[n],timeSeries@conns1@data$time[firstContant],units="secs")
                if(timefromstart > mintime){
-                 allGoAlong[nrow(allGoAlong)+1,]<-c(iniFinList)
+                 allPartner[nrow(allPartner)+1,]<-c(iniFinList)
                }
-#              allGoAlongList <- append(allGoAlongList,iniFinList)
+#              allPartnerList <- append(allPartnerList,iniFinList)
               iniFinList <- NULL
               inCounter = FALSE
             }
           }
 }
-      sendGoAlongPairsToDB(allGoAlong,datasource,"partners_small_2k_min10h")
-      return (allGoAlong)
+      sendPartnerPairsToDB(allPartner,datasource,tablename)
+      return (allPartner)
       }
 
 
@@ -137,9 +137,9 @@ if (id1==id2){
 )
 
 setMethod(
-  f = "GoAlong",
-  signature = c("Track","Track","numeric","numeric","numeric","PostgreSQLConnection"),
-  definition = function(A1, A2, dist, maxtime,mintime,datasource)
+  f = "partner",
+  signature = c("Track","Track","numeric","numeric","numeric","PostgreSQLConnection","character"),
+  definition = function(A1, A2, dist, maxtime,mintime,datasource,tablename)
   {
     tempo=maxtime
     loadPackages()
@@ -149,8 +149,8 @@ setMethod(
     minSize = FALSE
     firstContant = 1
     iniFinList <- list()
-    allGoAlongList <-list()
-    allGoAlong <- data.frame(Begin=as.POSIXct(character()),
+    allPartnerList <-list()
+    allPartner <- data.frame(Begin=as.POSIXct(character()),
                              End=as.POSIXct(character()),
                              Id1=character(),
                              Id2=character(),
@@ -177,7 +177,7 @@ setMethod(
     time  = 0
 
     if(id1==id2){
-      return(allGoAlong)
+      return(allPartner)
     }
     ## print(A1@data$traj[[1]])
     ## print(A2@data$traj[[1]])
@@ -187,12 +187,12 @@ setMethod(
     if (!identicalCRS(A1, A2))
       return("CRS are not identical!")
 
-    timeSeries <- mycompare(A2,A1)
+    timeSeries <- .mycompare(A2,A1)
     if(class(timeSeries)!="singledifftrack"&&class(timeSeries)!="difftrack"){
       return("Tracks don't match!")
     }
     if(class(timeSeries)=="singledifftrack"){
-      return(allGoAlong)
+      return(allPartner)
     }
     #Contador para as conexoes
     i = 1;
@@ -226,10 +226,10 @@ setMethod(
             timefromstart <- difftime(timeSeries@conns1@data$time[n],timeSeries@conns1@data$time[firstContant],units="secs")
             if(timefromstart > mintime){
               if(.RightSize(timeSeries,as.character(initialTime),as.character(finalTime),3)){
-              allGoAlong[nrow(allGoAlong)+1,]<-c(iniFinList)
+              allPartner[nrow(allPartner)+1,]<-c(iniFinList)
               }
             }
-            allGoAlongList <- append(allGoAlongList,iniFinList)
+            allPartnerList <- append(allPartnerList,iniFinList)
             iniFinList <- NULL
             inCounter = FALSE
             time=0
@@ -256,27 +256,27 @@ setMethod(
           timefromstart <- difftime(timeSeries@conns1@data$time[n],timeSeries@conns1@data$time[firstContant],units="secs")
           if(timefromstart > mintime){
             if(.RightSize(timeSeries,as.character(initialTime),as.character(finalTime),3)){
-              allGoAlong[nrow(allGoAlong)+1,]<-c(iniFinList)
+              allPartner[nrow(allPartner)+1,]<-c(iniFinList)
             }
             }
-         # allGoAlongList <- append(allGoAlongList,iniFinList)
+         # allPartnerList <- append(allPartnerList,iniFinList)
           iniFinList <- NULL
           inCounter = FALSE
         }
       }
     }
 
-     sendGoAlongPairsToDB(allGoAlong,datasource,"trucks_partners50m_15min_newest_s")
+     sendPartnerPairsToDB(allPartner,datasource,tablename)
      if(id2=="49101" && id1 =="48651"){
        assign("truck1", A1, envir = .GlobalEnv)
        assign("truck2", A2, envir = .GlobalEnv)
-       assign("problemgoalong", allGoAlong, envir = .GlobalEnv)
+       assign("problemgoalong", allPartner, envir = .GlobalEnv)
 
 
 
 
      }
-    return (allGoAlong)
+    return (allPartner)
   }
 
 
@@ -284,9 +284,9 @@ setMethod(
 )
 
 setMethod(
-  f = "GoAlong",
-  signature = c("Track","Track","numeric","numeric","numeric","logical"),
-  definition = function(A1, A2, dist, maxtime,mintime,datasource)
+  f = "partner",
+  signature = c("Track","Track","numeric","numeric","numeric","logical","missing"),
+  definition = function(A1, A2, dist, maxtime,mintime,datasource,tablename)
   {
     tempo=maxtime
     loadPackages()
@@ -296,8 +296,8 @@ setMethod(
     minSize = FALSE
     firstContant = 1
     iniFinList <- list()
-    allGoAlongList <-list()
-    allGoAlong <- data.frame(Begin=as.POSIXct(character()),
+    allPartnerList <-list()
+    allPartner <- data.frame(Begin=as.POSIXct(character()),
                              End=as.POSIXct(character()),
                              Id1=character(),
                              Id2=character(),
@@ -331,7 +331,7 @@ setMethod(
     if (!identicalCRS(A1, A2))
       return("CRS are not identical!")
 
-    timeSeries <- mycompare(A2,A1)
+    timeSeries <- .mycompare(A2,A1)
     if(class(timeSeries)!="singledifftrack"&&class(timeSeries)!="difftrack"){
       return("Tracks don't match!")
     }
@@ -366,9 +366,9 @@ setMethod(
             iniFinList <- c(Begin=as.character(initialTime),End=as.character(finalTime),Id1=id1,Id2=id2)
             timefromstart <- difftime(timeSeries@conns1@data$time[n],timeSeries@conns1@data$time[firstContant],units="secs")
             if(timefromstart > mintime){
-              allGoAlong[nrow(allGoAlong)+1,]<-c(iniFinList)
+              allPartner[nrow(allPartner)+1,]<-c(iniFinList)
             }
-             allGoAlongList <- append(allGoAlongList,iniFinList)
+             allPartnerList <- append(allPartnerList,iniFinList)
             iniFinList <- NULL
             inCounter = FALSE
             time=0
@@ -394,16 +394,161 @@ setMethod(
           iniFinList <- c(Begin=as.character(initialTime),End=as.character(finalTime),Id1=id1,Id2=id2)
           timefromstart <- difftime(timeSeries@conns1@data$time[n],timeSeries@conns1@data$time[firstContant],units="secs")
           if(timefromstart > mintime){
-            allGoAlong[nrow(allGoAlong)+1,]<-c(iniFinList)
+            allPartner[nrow(allPartner)+1,]<-c(iniFinList)
           }
-                       allGoAlongList <- append(allGoAlongList,iniFinList)
+                       allPartnerList <- append(allPartnerList,iniFinList)
           iniFinList <- NULL
           inCounter = FALSE
         }
       }
     }
-    # sendGoAlongPairsToDB(allGoAlong,datasource,"trucks_partners50m_15min_p2")
-    return (allGoAlong)
+    # sendPartnerPairsToDB(allPartner,datasource,"trucks_partners50m_15min_p2")
+    return (allPartner)
+  }
+
+
+
+)
+
+setMethod(
+  f = "partner",
+  signature = c("TracksCollection","missing","numeric","numeric","numeric","missing","missing"),
+  definition = function(A1, A2, dist, maxtime,mintime,datasource,tablename)
+  {
+    tempo=maxtime
+
+
+    allPartner <- data.frame(Begin=as.POSIXct(character()),
+                             End=as.POSIXct(character()),
+                             Id1=character(),
+                             Id2=character(),
+                             stringsAsFactors=FALSE)
+
+
+
+    for (n in 1:length(A1@tracksCollection)) {
+      ## foreach (m =1:length(TrajectoryList@tracksCollection[[n]]@tracks))%dopar% {
+      for (m in 1:length(A1@tracksCollection[[n]]@tracks)) {
+
+        for (l in n:length(A1@tracksCollection)) {
+          for (k in 1:length(A1@tracksCollection[[l]]@tracks)) {
+        if(length(A1@tracksCollection[[n]]@tracks[[m]])>5 & length(A1@tracksCollection[[l]]@tracks[[k]])>5 ){
+          ga<- partner(A1@tracksCollection[[l]]@tracks[[k]],A1@tracksCollection[[n]]@tracks[[m]],dist,tempo,mintime,FALSE)
+        }
+        if(class(ga)=="data.frame"){
+          if (nrow(ga)>0){
+            for(j in 1:nrow(ga)){
+              if(ga[[j,3]]!=ga[[j,4]]){
+                allPartner[nrow(allPartner)+1,]<-ga[j,]
+              }
+
+            }
+          }
+        }
+        }
+      }
+      }
+    }
+
+
+    return (allPartner)
+
+  }
+
+
+
+)
+
+setMethod(
+  f = "partner",
+  signature = c("TracksCollection","TracksCollection","numeric","numeric","numeric","missing","missing"),
+  definition = function(A1, A2, dist, maxtime,mintime,datasource,tablename)
+  {
+    tempo=maxtime
+
+
+    allPartner <- data.frame(Begin=as.POSIXct(character()),
+                             End=as.POSIXct(character()),
+                             Id1=character(),
+                             Id2=character(),
+                             stringsAsFactors=FALSE)
+
+
+
+    for (n in 1:length(A1@tracksCollection)) {
+      ## foreach (m =1:length(TrajectoryList@tracksCollection[[n]]@tracks))%dopar% {
+      for (m in 1:length(A1@tracksCollection[[n]]@tracks)) {
+
+        for (l in 1:length(A1@tracksCollection)) {
+          for (k in 1:length(A1@tracksCollection[[l]]@tracks)) {
+            if(length(A1@tracksCollection[[n]]@tracks[[m]])>5 & length(A2@tracksCollection[[l]]@tracks[[k]])>5 ){
+              ga<- partner(A2@tracksCollection[[l]]@tracks[[k]],A1@tracksCollection[[n]]@tracks[[m]],dist,tempo,mintime,FALSE)
+            }
+            if(class(ga)=="data.frame"){
+              if (nrow(ga)>0){
+                for(j in 1:nrow(ga)){
+                  if(ga[[j,3]]!=ga[[j,4]]){
+                    allPartner[nrow(allPartner)+1,]<-ga[j,]
+                  }
+
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+
+    return (allPartner)
+
+  }
+
+
+
+)
+
+setMethod(
+  f = "partner",
+  signature = c("TracksCollection","Track","numeric","numeric","numeric","missing","missing"),
+  definition = function(A1, A2, dist, maxtime,mintime,datasource,tablename)
+  {
+    tempo=maxtime
+
+
+    allPartner <- data.frame(Begin=as.POSIXct(character()),
+                             End=as.POSIXct(character()),
+                             Id1=character(),
+                             Id2=character(),
+                             stringsAsFactors=FALSE)
+
+
+
+    for (n in 1:length(A1@tracksCollection)) {
+      ## foreach (m =1:length(TrajectoryList@tracksCollection[[n]]@tracks))%dopar% {
+      for (m in 1:length(A1@tracksCollection[[n]]@tracks)) {
+
+
+            if(length(A1@tracksCollection[[n]]@tracks[[m]])>5 ){
+              ga<- partner(A2,A1@tracksCollection[[n]]@tracks[[m]],dist,tempo,mintime,FALSE)
+            }
+            if(class(ga)=="data.frame"){
+              if (nrow(ga)>0){
+                for(j in 1:nrow(ga)){
+                  if(ga[[j,3]]!=ga[[j,4]]){
+                    allPartner[nrow(allPartner)+1,]<-ga[j,]
+                  }
+
+                }
+              }
+
+        }
+      }
+    }
+
+
+    return (allPartner)
+
   }
 
 

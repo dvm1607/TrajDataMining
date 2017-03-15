@@ -1,4 +1,4 @@
-loadPackages <- function() {
+.loadPackages <- function() {
   if (!require(rgeos, quietly = TRUE)) {
     stop('The package rgeos was not installed')
   }
@@ -14,9 +14,7 @@ loadPackages <- function() {
   if (!require(sp, quietly = TRUE)) {
     stop('The package sp was not installed')
   }
-  if (!require(TrajDataAccess, quietly = TRUE)) {
-    stop('The package TrajDataAccess was not installed')
-  }
+
 
   if (!require(geosphere, quietly = TRUE)) {
     stop('The package geosphere was not installed')

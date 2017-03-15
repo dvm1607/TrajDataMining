@@ -2,7 +2,7 @@ setGeneric(
   name = "createSpatialCluster",
   def = function(track, clusterlist)
   {
-    loadPackages()
+    .loadPackages()
     standardGeneric("createSpatialCluster")
   }
 )
@@ -74,6 +74,6 @@ setMethod(
     polygons <- SpatialPolygons(list(polygons))
     attr = data.frame(a=1:1, b=1:1, row.names=c("x"))
     polygons <- SpatialPolygonsDataFrame(polygons, attr)
-return(polygons)
+    return(polygons)
   }
 )

@@ -2,7 +2,7 @@ setGeneric(
   name = ".RightSize",
   def = function(diffTracks,begintime,endtime,sizeMultiplier)
   {
-    loadPackages()
+    .loadPackages()
     standardGeneric(".RightSize")
   }
 )

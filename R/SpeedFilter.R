@@ -1,14 +1,14 @@
 setGeneric(
-  name = "SpeedFilter",
+  name = "speedFilter",
   def = function(A1,speed)
   {
-    loadPackages()
-    standardGeneric("SpeedFilter")
+    .loadPackages()
+    standardGeneric("speedFilter")
   }
 )
 
 setMethod(
-  f = "SpeedFilter",
+  f = "speedFilter",
   signature = c("Track", "numeric"),
   definition = function(A1, speed)
   {
@@ -33,7 +33,7 @@ setMethod(
       }
 
 
-    return(IndexToTrack(A1,pointIndexsToKeep))
+    return(.IndexToTrack(A1,pointIndexsToKeep))
 
   }
 )

@@ -1,18 +1,18 @@
 setGeneric(
-  name = "LimitedNeighborhood",
+  name = ".LimitedNeighborhood",
   def = function(track, ini,minT,cln , cl, avg , sl)
   {
-    loadPackages()
-    standardGeneric("LimitedNeighborhood")
+    .loadPackages()
+    standardGeneric(".LimitedNeighborhood")
   }
 )
 
 setMethod(
-  f = "LimitedNeighborhood",
+  f = ".LimitedNeighborhood",
   signature = c("Track","numeric", "numeric","numeric", "list", "numeric", "numeric"),
   definition = function(track, ini, minT ,cln , cl, avg, sl)
   {
-    sln <- SlowestNeighborhood(track,ini,minT,cl)
+    sln <- .SlowestNeighborhood(track,ini,minT,cl)
     sln <- sort(unlist(sln))
     print(sln)
     avgspeed = 0
