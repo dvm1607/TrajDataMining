@@ -2,7 +2,7 @@ setGeneric(
   name = "partner",
   def = function(A1, A2, dist, maxtime,mintime,datasource,tablename)
   {
-    .loadPackages()
+    loadPackages()
     standardGeneric("partner")
   }
 )
