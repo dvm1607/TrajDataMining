@@ -2,7 +2,7 @@ setGeneric(
   name = "partner",
   def = function(A1, A2, dist, maxtime,mintime,datasource,tablename)
   {
-    loadPackages()
+    .loadPackages()
     standardGeneric("partner")
   }
 )
@@ -13,7 +13,7 @@ setMethod(
   definition = function(A1, A2, dist, maxtime,mintime,datasource,tablename)
   {
     tempo=maxtime
-    loadPackages()
+    .loadPackages()
     initialTime = -1
     finalTime = -1
    inCounter = FALSE
